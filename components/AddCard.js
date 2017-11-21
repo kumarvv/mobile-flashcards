@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { View, KeyboardAvoidingView, TextInput, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
-import {black, gray, white} from '../utils/colors'
+import { gray, white } from '../utils/colors'
 import { addCardToDeck } from '../utils/api'
 import { receiveAddCard } from '../actions/index'
 import { BlackButton } from './Buttons'
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: white
   },
   input: {
     fontSize: 20,

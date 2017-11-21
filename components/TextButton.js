@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
   }
 })

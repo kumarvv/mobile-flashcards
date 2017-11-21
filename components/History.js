@@ -5,6 +5,7 @@ import { getHistory, clearHistory } from '../utils/api'
 import { receiveHistory, receiveClearHistory } from '../actions/index'
 import {gray, green, lightGray, red, white} from '../utils/colors'
 import { RedButton } from './Buttons'
+import sortBy from 'sort-by'
 
 class History extends Component {
   componentDidMount() {
@@ -30,7 +31,9 @@ class History extends Component {
       <View style={styles.container}>
         <ScrollView>
           {history && (
-            Object.values(history).map((item) => (
+            Object.values(history)
+              .sort(sortBy('-time'))
+              .map((item) => (
               <View key={item.time} style={styles.items}>
                 <View>
                   <Text style={styles.title}>{item.title}</Text>

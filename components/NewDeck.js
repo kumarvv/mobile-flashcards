@@ -51,6 +51,8 @@ class NewDeck extends Component {
           <Text style={styles.title}>
             What is the title of your new deck?
           </Text>
+        </View>
+        <View>
           <TextInput
             style={styles.input}
             onChangeText={(title) => this.setState(() => ({title}))}
@@ -61,7 +63,7 @@ class NewDeck extends Component {
         </View>
         <View>
           <BlackButton
-            label="Submit"
+            label="Create Deck"
             onPress={() => this.onSubmit()}
           />
         </View>
@@ -96,7 +98,8 @@ const styles = StyleSheet.create({
     width: 300,
     height: 40,
     margin: 10,
-    padding: 10
+    padding: 10,
+    alignSelf: 'center'
   }
 })
 

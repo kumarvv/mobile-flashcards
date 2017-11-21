@@ -1,5 +1,14 @@
 {
   "expo": {
-    "sdkVersion": "22.0.0"
+    "sdkVersion": "21.0.0",
+    "orientation": "portrait",
+    "name": "mobile-flashcards",
+    "description": "FlashCards Manager",
+    "slug": "mobile-flashcards",
+    "version": "1.0",
+    "icon": "flashcards.png",
+    "notification": {
+      "icon": "flashcards.png"
+    }
   }
 }

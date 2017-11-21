@@ -4,7 +4,9 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { gray, red, white, green } from '../utils/colors'
 import { receiveHistory, receiveAddHistory } from '../actions/index'
 import { getHistory, addToHistory } from '../utils/api'
-import { GreenButton, RedButton } from './Buttons'
+import { BlackButton, GreenButton, RedButton, WhiteButton } from './Buttons'
+import { NavigationActions } from 'react-navigation'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class Quiz extends Component {
   state = {
@@ -32,6 +34,7 @@ class Quiz extends Component {
   }
 
   submitSelection = (correctAns) => {
+    const { dispatch } = this.props
     const { deck } = this.props.navigation.state.params
 
     if (deck && deck.questions && this.state.index < deck.questions.length) {
@@ -55,15 +58,31 @@ class Quiz extends Component {
 
         addToHistory(result)
           .then(() => {
-            receiveAddHistory(result)
+            dispatch(receiveAddHistory(result))
 
             this.setState(() => ({
               time: result.time,
               done: true
             }))
           })
+
+        clearLocalNotification()
+          .then(setLocalNotification)
       }
     }
+  }
+
+  goBack = () => {
+    this.props.navigation.dispatch(NavigationActions.back())
+  }
+
+  restartQuiz = () => {
+    this.setState(() => ({
+      index: 0,
+      correct: 0,
+      incorrect: 0,
+      done: false
+    }))
   }
 
   renderResult() {
@@ -93,10 +112,19 @@ class Quiz extends Component {
         </Text>
         <Text style={{
           fontSize: 22,
-          color: red
+          color: red,
+          marginBottom: 20
         }}>
           Incorrect: {incorrect}
         </Text>
+        <WhiteButton
+          label="Restart Quiz"
+          onPress={() => this.restartQuiz()}
+        />
+        <BlackButton
+          label="Back to Deck"
+          onPress={() => this.goBack()}
+        />
       </View>
     )
   }
@@ -135,7 +163,7 @@ class Quiz extends Component {
             </Text>
             <TouchableOpacity onPress={() => this.switchAnswer()}>
               <Text style={styles.answerLink}>
-                {showAnswer
+                Show {showAnswer
                   ? 'Question'
                   : 'Answer'
                 }
@@ -182,7 +210,7 @@ const styles = StyleSheet.create({
     padding: 20
   },
   answerLink: {
-    fontSize: 24,
+    fontSize: 20,
     color: red
   },
   doneContainer: {

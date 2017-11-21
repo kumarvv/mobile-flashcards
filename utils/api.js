@@ -53,8 +53,8 @@ export function getHistory() {
 
 export function addToHistory(result) {
   return AsyncStorage.mergeItem(MOBILE_FLASHCARDS_HISTORY_KEY, JSON.stringify({
-    [result.time]: result
-  }))
+      [result.time]: result
+    }))
 }
 
 export function clearHistory() {

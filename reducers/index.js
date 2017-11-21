@@ -11,7 +11,6 @@ import {
 import { deleteKey, addCardToDeckCards } from '../utils/helpers'
 
 function entries(state = {}, action) {
-  console.log('reducer: type:' + action.type + ", title=" + action.title)
   switch(action.type) {
     case RECEIVE_DECKS:
       return {
@@ -51,7 +50,9 @@ function entries(state = {}, action) {
     case RECEIVE_HISTORY:
       return {
         ...state,
-        history: action.history
+        history: {
+          ...action.history
+        }
       }
 
     case RECEIVE_ADD_HISTORY:
@@ -59,7 +60,7 @@ function entries(state = {}, action) {
         ...state,
         history: {
           ...state.history,
-          [result.time]: result
+          [action.result.time]: action.result
         }
       }
 

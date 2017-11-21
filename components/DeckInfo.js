@@ -17,7 +17,6 @@ class DeckInfo extends Component {
       <View style={styles.deckContainer}>
         {deckInfo && (
           <View style={styles.deckDetail}>
-            <View/>
             <View>
               <Text style={styles.title}>
                 {deckInfo.title}
@@ -28,9 +27,10 @@ class DeckInfo extends Component {
                   : 0} cards
               </Text>
             </View>
-            <View>
+            <View style={{ marginTop: 20 }}>
               <WhiteButton
-                label="Add Card"
+                label="Create New Question"
+                style={{ width: 200 }}
                 onPress={() => navigation.navigate(
                   'AddCard',
                   { deck: deckInfo }
@@ -38,7 +38,8 @@ class DeckInfo extends Component {
               />
               { deckInfo && deckInfo.questions && deckInfo.questions.length > 0 && (
                 <BlackButton
-                  label="Start Quiz"
+                  label="Start a Quiz"
+                  style={{ width: 200 }}
                   onPress={() => navigation.navigate(
                     'Quiz',
                     { deck: deckInfo }
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
   deckDetail: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 20
   },

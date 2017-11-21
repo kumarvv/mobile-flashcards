@@ -26,5 +26,8 @@ yarn install
 ## Run the Application 
 1. Start the app using yarn: 
 ```$bash 
-yarn 
+yarn start
 ```
+
+## Create React App
+This project was bootstrapped with Create React Native App. You can find more information on how to perform common tasks here.
