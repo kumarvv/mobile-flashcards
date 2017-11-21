@@ -26,28 +26,26 @@ export function addCardToDeckCards(decks, title, card) {
   }
 }
 
-export function clearLocalNotification() {
-  return AsyncStorage.removeItem(NOTIFICATION_KEY)
+export const clearLocalNotification = () => (
+  AsyncStorage.removeItem(NOTIFICATION_KEY)
     .then(Notifications.cancelAllScheduledNotificationsAsync)
-}
+)
 
-export function createNotification() {
-  return {
-    title: 'Take a daily Quiz!',
-    body: "👋 Don't forget to complete at least one quiz a day",
-    ios: {
-      sound: true
-    },
-    android: {
-      sound: true,
-      priority: 'high',
-      sticky: false,
-      vibrate: true
-    }
+export const createNotification = () => ({
+  title: 'Take a daily Quiz!',
+  body: "👋 Don't forget to complete at least one quiz a day",
+  ios: {
+    sound: true
+  },
+  android: {
+    sound: true,
+    priority: 'high',
+    sticky: false,
+    vibrate: true
   }
-}
+})
 
-export function setLocalNotification() {
+export const setLocalNotification = () => {
   AsyncStorage.getItem(NOTIFICATION_KEY)
     .then(JSON.parse)
     .then((data) => {

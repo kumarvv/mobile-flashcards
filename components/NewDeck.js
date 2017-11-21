@@ -12,15 +12,23 @@ class NewDeck extends Component {
     title: ''
   }
 
-  toHome = () => {
+  toDeckInfo = (deck) => {
+    // going back to home and then to "DeckInfo"
+    // so DeckInfo can back to home when done
+
     this.props.navigation.dispatch(NavigationActions.back({
       key: 'NewDeck'
     }))
+
+    this.props.navigation.navigate(
+      'DeckInfo',
+      { deck: deck }
+    )
   }
 
   onSubmit = () => {
     const { title } = this.state
-    const { dispatch } = this.props
+    const { receiveNewDeck } = this.props
 
     if (!title || title === '') {
       Alert.alert('Warning', 'Deck Title is required')
@@ -29,16 +37,18 @@ class NewDeck extends Component {
 
     saveDeckTitle(title)
       .then(() => {
-        dispatch(receiveNewDeck(title, {
+        const deck = {
           title: title,
           questions: []
-        }))
+        }
+
+        receiveNewDeck(title, deck)
 
         this.setState(() => ({
           title: ''
         }))
 
-        this.toHome()
+        this.toDeckInfo(deck)
       })
   }
 
@@ -103,10 +113,6 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps({ decks }) {
-  return {
-    decks
-  }
-}
+const mapStateToProps = ({ decks }) => ({ decks })
 
-export default connect(mapStateToProps)(NewDeck)
+export default connect(mapStateToProps, { receiveNewDeck })(NewDeck)

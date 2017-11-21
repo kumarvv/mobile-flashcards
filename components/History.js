@@ -91,10 +91,6 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps({ history }) {
-  return {
-    history
-  }
-}
+const mapStateToProps = ({ history }) => ({ history })
 
 export default connect(mapStateToProps)(History)
