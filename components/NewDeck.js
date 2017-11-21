@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native'
+import { View, KeyboardAvoidingView, Text, TextInput, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { receiveNewDeck } from '../actions'
 import { saveDeckTitle } from '../utils/api'
@@ -44,8 +44,9 @@ class NewDeck extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View/>
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={styles.container}>
         <View>
           <Text style={styles.title}>
             What is the title of your new deck?
@@ -64,7 +65,7 @@ class NewDeck extends Component {
             onPress={() => this.onSubmit()}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -72,7 +73,7 @@ class NewDeck extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: white,
     paddingBottom: 20

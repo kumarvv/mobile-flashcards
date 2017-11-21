@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, TextInput, StyleSheet, Alert } from 'react-native'
+import { View, KeyboardAvoidingView, TextInput, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 import {black, gray, white} from '../utils/colors'
@@ -37,7 +37,7 @@ class AddCard extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View>
           <TextInput
             style={styles.input}
@@ -48,9 +48,9 @@ class AddCard extends Component {
             placeholder="Question"
           />
           <TextInput
-            style={[styles.input, {height: 80}]}
+            style={styles.input}
             multiline={true}
-            numberOfLines={4}
+            numberOfLines={2}
             onChangeText={(answer) => this.setState(() => ({answer}))}
             value={this.state.answer}
             placeholder="Answer"
@@ -63,7 +63,7 @@ class AddCard extends Component {
           />
         </View>
         <View/>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -71,9 +71,8 @@ class AddCard extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20
   },
   input: {
     fontSize: 20,
