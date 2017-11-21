@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native'
-import { deleteKey, addCardToDeckCards } from "./helpers"
+import { deleteKey, addCardToDeckCards } from './helpers'
 
 const MOBILE_FLASHCARDS_DECKS_KEY = "MobileFlashCards:Decks"
 const MOBILE_FLASHCARDS_HISTORY_KEY = "MobileFlashCards:History"

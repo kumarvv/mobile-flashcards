@@ -1,6 +1,6 @@
 import React from 'react'
-import { black, white, red, green } from "../utils/colors";
-import TextButton from "./TextButton";
+import { black, white, red, green } from '../utils/colors'
+import TextButton from './TextButton'
 
 export const WhiteButton = ({ style, textStyle, ...other }) => (
   <TextButton

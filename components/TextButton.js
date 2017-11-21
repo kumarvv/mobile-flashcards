@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import {black, gray, purple, red} from "../utils/colors";
 
 class TextButton extends Component {
   render() {
