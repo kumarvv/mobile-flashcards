@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { receiveDecks } from '../actions'
-import { getDecks } from "../utils/api"
-import { black, gray, white } from "../utils/colors"
+import { getDecks } from '../utils/api'
+import { black, gray, white } from '../utils/colors'
 
 const Deck = ({ deck, navigation }) => (
   <TouchableOpacity onPress={() => navigation.navigate(
@@ -28,7 +28,9 @@ class DeckList extends Component {
     const { dispatch } = this.props
 
     getDecks()
-      .then((decks) => dispatch(receiveDecks(decks)))
+      .then((decks) => {
+        dispatch(receiveDecks(decks))
+      })
   }
 
   render() {
@@ -38,7 +40,8 @@ class DeckList extends Component {
       <ScrollView style={styles.container}>
         {decks && (
           <View>
-            {Object.values(decks).map((deck) => (
+            {Object.values(decks)
+              .map((deck) => (
               <Deck
                 deck={deck}
                 navigation={navigation}
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps(decks) {
+function mapStateToProps({ decks }) {
   return {
     decks
   }

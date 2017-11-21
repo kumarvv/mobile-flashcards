@@ -1,12 +1,26 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { red, white, green } from "../utils/colors"
-import TextButton from "./TextButton"
+import { gray, red, white, green } from '../utils/colors'
+import { receiveHistory, receiveAddHistory } from '../actions/index'
+import { getHistory, addToHistory } from '../utils/api'
+import { GreenButton, RedButton } from './Buttons'
 
 class Quiz extends Component {
   state = {
     index: 0,
-    showAnswer: false
+    showAnswer: false,
+    time: '',
+    correct: 0,
+    incorrect: 0,
+    done: false
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props
+
+    getHistory()
+      .then((history) => dispatch(receiveHistory(history)))
   }
 
   switchAnswer = () => {
@@ -17,20 +31,79 @@ class Quiz extends Component {
     }))
   }
 
-  moveToNext = () => {
-    const { index } = this.state
+  submitSelection = (correctAns) => {
     const { deck } = this.props.navigation.state.params
 
-    if (deck && deck.questions && index < deck.questions.length -1) {
+    if (deck && deck.questions && this.state.index < deck.questions.length) {
+      let index = this.state.index +1
+      let correct = correctAns ? this.state.correct + 1 : this.state.correct
+      let incorrect = correctAns ? this.state.incorrect : this.state.incorrect + 1
+
       this.setState(() => ({
-        index: index+1
+        index,
+        correct,
+        incorrect
       }))
+
+      if (index === deck.questions.length) {
+        const result = {
+          time: new Date().getTime(),
+          title: deck.title,
+          correct,
+          incorrect
+        }
+
+        addToHistory(result)
+          .then(() => {
+            receiveAddHistory(result)
+
+            this.setState(() => ({
+              time: result.time,
+              done: true
+            }))
+          })
+      }
     }
+  }
+
+  renderResult() {
+    const { time, correct, incorrect } = this.state
+    const { deck } = this.props.navigation.state.params
+
+    return (
+      <View style={styles.doneContainer}>
+        <Text style={{
+          fontSize: 36,
+          fontWeight: 'bold'
+        }}>
+          {deck.title}
+        </Text>
+        <Text style={{
+          fontSize: 20,
+          color: gray
+        }}>
+          {new Date(time).toLocaleString()}
+        </Text>
+        <Text style={{
+          marginTop: 20,
+          fontSize: 22,
+          color: green
+        }}>
+          Correct: {correct}
+        </Text>
+        <Text style={{
+          fontSize: 22,
+          color: red
+        }}>
+          Incorrect: {incorrect}
+        </Text>
+      </View>
+    )
   }
 
   render() {
     const { deck } = this.props.navigation.state.params
-    const { index, showAnswer } = this.state
+    const { index, showAnswer, done } = this.state
 
     const question = deck && deck.questions && deck.questions.length > index
       ? deck.questions[index].question
@@ -39,6 +112,10 @@ class Quiz extends Component {
     const answer = deck && deck.questions && deck.questions.length > index
       ? deck.questions[index].answer
       : null
+
+    if (done) {
+      return this.renderResult()
+    }
 
     return (
       <View style={styles.container}>
@@ -66,27 +143,13 @@ class Quiz extends Component {
             </TouchableOpacity>
           </View>
           <View>
-            <TextButton
+            <GreenButton
               label="Correct"
-              style={{
-                backgroundColor: green,
-                borderColor: green
-              }}
-              textStyle={{
-                color: white
-              }}
-              onPress={() => this.moveToNext()}
+              onPress={() => this.submitSelection(true)}
             />
-            <TextButton
+            <RedButton
               label="Incorrect"
-              style={{
-                backgroundColor: red,
-                borderColor: red
-              }}
-              textStyle={{
-                color: white
-              }}
-              onPress={() => this.moveToNext()}
+              onPress={() => this.submitSelection(false)}
             />
           </View>
         </View>
@@ -121,7 +184,20 @@ const styles = StyleSheet.create({
   answerLink: {
     fontSize: 24,
     color: red
+  },
+  doneContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: white
   }
 })
 
-export default Quiz
+function mapStateToProps({ history }) {
+  return {
+    history
+  }
+}
+
+export default connect(mapStateToProps)(Quiz)

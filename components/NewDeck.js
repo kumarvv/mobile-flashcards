@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TextInput, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { receiveNewDeck } from '../actions'
-import { addDeck } from '../utils/api'
-import {black, white} from "../utils/colors"
-import TextButton from './TextButton'
+import { saveDeckTitle } from '../utils/api'
+import { gray, white } from '../utils/colors'
 import { NavigationActions } from 'react-navigation'
+import { BlackButton } from './Buttons'
 
 class NewDeck extends Component {
   state = {
@@ -20,15 +20,24 @@ class NewDeck extends Component {
 
   onSubmit = () => {
     const { title } = this.state
+    const { dispatch } = this.props
 
-    const deck = {
-      title,
-      questions: []
+    if (!title || title === '') {
+      Alert.alert('Warning', 'Deck Title is required')
+      return
     }
 
-    addDeck(title, deck)
+    saveDeckTitle(title)
       .then(() => {
-        receiveNewDeck(title, deck)
+        dispatch(receiveNewDeck(title, {
+          title: title,
+          questions: []
+        }))
+
+        this.setState(() => ({
+          title: ''
+        }))
+
         this.toHome()
       })
   }
@@ -46,18 +55,15 @@ class NewDeck extends Component {
             onChangeText={(title) => this.setState(() => ({title}))}
             value={this.state.title}
             placeholder="Deck Title"
+            autoFocus={true}
           />
         </View>
-        <TextButton
-          label="Submit"
-          style={{
-            backgroundColor: black
-          }}
-          textStyle={{
-            color: white
-          }}
-          onPress={() => this.onSubmit()}
-        />
+        <View>
+          <BlackButton
+            label="Submit"
+            onPress={() => this.onSubmit()}
+          />
+        </View>
       </View>
     )
   }
@@ -76,7 +82,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   input: {
-    borderColor: black,
+    borderColor: gray,
     borderWidth: 1,
     borderRadius: 5,
     shadowRadius: 3,
@@ -93,14 +99,10 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps() {
-  return {}
-}
-
-function mapDispatchToProps(dispatch) {
+function mapStateToProps({ decks }) {
   return {
-    receiveNewDeck: (title) => dispatch(receiveNewDeck(title))
+    decks
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewDeck)
+export default connect(mapStateToProps)(NewDeck)

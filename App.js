@@ -5,14 +5,15 @@ import { Provider } from 'react-redux'
 import reducer from './reducers'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { Constants } from 'expo'
-import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons'
+import { MaterialCommunityIcons, FontAwesome, Ionicons } from '@expo/vector-icons'
 import DeckList from './components/DeckList'
 import NewDeck from './components/NewDeck'
 import { black, white } from './utils/colors'
-import DeckInfo from "./components/DeckInfo"
-import AddCard from "./components/AddCard"
-import Quiz from "./components/Quiz"
-import Summary from "./components/Summary";
+import DeckInfo from './components/DeckInfo'
+import AddCard from './components/AddCard'
+import Quiz from './components/Quiz'
+import History from './components/History'
+import Settings from './components/Settings' 
 
 function AppStatusBar ({backgroundColor, ...props}) {
   return (
@@ -37,11 +38,18 @@ const Tabs = TabNavigator({
       tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor}/>
     }
   },
-  Summary: {
-    screen: Summary,
+  History: {
+    screen: History,
     navigationOptions: {
-      tabBarLabel: 'Quiz Results',
-      tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='cards-variant' size={30} color={tintColor}/>
+      tabBarLabel: 'History',
+      tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='chart-histogram' size={30} color={tintColor}/>
+    }
+  },
+  Settings: {
+    screen: Settings,
+    navigationOptions: {
+      tabBarLabel: 'Settings',
+      tabBarIcon: ({ tintColor }) => <Ionicons name='ios-settings' size={30} color={tintColor}/>
     }
   }
 })
@@ -50,7 +58,7 @@ const MainNavigator = StackNavigator({
   Home: {
     screen: Tabs,
     navigationOptions: {
-      title: 'Decks',
+      title: 'FlashCards',
       headerTintColor: white,
       headerStyle: {
         backgroundColor: black

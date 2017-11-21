@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     },
     width: 150,
     padding: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    alignSelf: 'flex-end'
   },
   buttonText: {
     fontSize: 20,

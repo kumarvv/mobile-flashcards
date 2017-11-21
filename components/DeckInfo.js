@@ -1,49 +1,47 @@
 import React, {Component} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import {black, gray, white} from "../utils/colors"
-import TextButton from './TextButton'
+import { black, gray, white } from '../utils/colors'
+import { BlackButton, WhiteButton } from './Buttons'
 
 class DeckInfo extends Component {
   render() {
     const { deck } = this.props.navigation.state.params
-    const { navigation } = this.props
+    const { decks, navigation } = this.props
+
+    const deckInfo = decks && deck
+      ? decks[deck.title]
+      : deck
 
     return (
       <View style={styles.deckContainer}>
-        {deck && (
+        {deckInfo && (
           <View style={styles.deckDetail}>
             <View/>
             <View>
               <Text style={styles.title}>
-                {deck.title}
+                {deckInfo.title}
               </Text>
               <Text style={styles.subtitle}>
-                {deck.questions
-                  ? deck.questions.length
+                {deckInfo.questions
+                  ? deckInfo.questions.length
                   : 0} cards
               </Text>
             </View>
             <View>
-              <TextButton
+              <WhiteButton
                 label="Add Card"
                 onPress={() => navigation.navigate(
                   'AddCard',
-                  { deck: deck }
+                  { deck: deckInfo }
                 )}
               />
-              { deck && deck.questions && deck.questions.length > 0 && (
-                <TextButton
+              { deckInfo && deckInfo.questions && deckInfo.questions.length > 0 && (
+                <BlackButton
                   label="Start Quiz"
-                  style={{
-                    backgroundColor: black
-                  }}
-                  textStyle={{
-                    color: white
-                  }}
                   onPress={() => navigation.navigate(
                     'Quiz',
-                    { deck: deck }
+                    { deck: deckInfo }
                   )}
                 />
               )}
@@ -71,7 +69,8 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: 'bold',
     color: black,
-    textAlign: 'center'
+    textAlign: 'center',
+    padding: 10
   },
   subtitle: {
     fontSize: 22,
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps(decks) {
+function mapStateToProps({ decks }) {
   return {
     decks
   }
