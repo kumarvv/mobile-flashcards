@@ -28,6 +28,7 @@ yarn install
 ```$bash 
 yarn start
 ```
+2. Follow the instructions to open the app in iOS or Android simulators / devices. 
 
 ## Create React App
 This project was bootstrapped with Create React Native App. You can find more information on how to perform common tasks here.
